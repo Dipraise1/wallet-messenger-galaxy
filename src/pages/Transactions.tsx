@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Layout } from '../components/Layout';
 import { ArrowUpRight, ArrowDownLeft, ExternalLink } from 'lucide-react';
@@ -138,13 +137,9 @@ const Transactions = () => {
                           tx.type === 'incoming' ? 'bg-neonGreen/20' : 'bg-neonPink/20'
                         }`}>
                           {tx.type === 'incoming' ? (
-                            <ArrowDownLeft className={`w-4 h-4 ${
-                              tx.type === 'incoming' ? 'text-neonGreen' : 'text-neonPink'
-                            }`} />
+                            <ArrowDownLeft className="w-4 h-4 text-neonGreen" />
                           ) : (
-                            <ArrowUpRight className={`w-4 h-4 ${
-                              tx.type === 'incoming' ? 'text-neonGreen' : 'text-neonPink'
-                            }`} />
+                            <ArrowUpRight className="w-4 h-4 text-neonPink" />
                           )}
                         </div>
                         <span className="text-sm font-medium capitalize">
