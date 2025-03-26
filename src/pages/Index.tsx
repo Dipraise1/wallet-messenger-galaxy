@@ -1,29 +1,28 @@
-
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { WalletConnect } from '../components/WalletConnect';
 import { BlockchainSelector } from '../components/BlockchainSelector';
-
-interface Blockchain {
-  id: string;
-  name: string;
-  icon: string;
-  color: string;
-}
+import { useBlockchain } from '../lib/blockchain/blockchain-context';
+import { Blockchain } from '../lib/blockchain/types';
 
 const Index = () => {
   const [step, setStep] = useState<'connect' | 'select'>('connect');
   const navigate = useNavigate();
+  const { walletInfo } = useBlockchain();
+
+  // If wallet is already connected, redirect to messages
+  useEffect(() => {
+    if (walletInfo) {
+      navigate('/messages');
+    }
+  }, [walletInfo, navigate]);
 
   const handleConnect = () => {
     setStep('select');
   };
 
   const handleSelectBlockchain = (blockchain: Blockchain) => {
-    // In a real app, we would store the selected blockchain
-    console.log(`Selected blockchain: ${blockchain.name}`);
-    
-    // Navigate to messages page
+    // Navigate to messages page after successful blockchain connection
     navigate('/messages');
   };
 

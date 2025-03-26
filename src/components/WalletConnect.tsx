@@ -1,12 +1,20 @@
-
 import React from 'react';
-import { Wallet, ChevronRight } from 'lucide-react';
+import { Wallet, ChevronRight, Loader2 } from 'lucide-react';
+import { useBlockchain } from '../lib/blockchain/blockchain-context';
 
 interface WalletConnectProps {
   onConnect: () => void;
 }
 
 export const WalletConnect: React.FC<WalletConnectProps> = ({ onConnect }) => {
+  const { connectWallet, isConnecting, walletInfo } = useBlockchain();
+
+  const handleConnect = async () => {
+    // We'll select the blockchain in the next step (in BlockchainSelector component)
+    // For now, just call the onConnect callback to progress to the next step
+    onConnect();
+  };
+
   return (
     <div className="glass-card rounded-xl p-6 max-w-md w-full animate-fade-in">
       <div className="flex items-center justify-center mb-6">
@@ -18,12 +26,22 @@ export const WalletConnect: React.FC<WalletConnectProps> = ({ onConnect }) => {
       </p>
       
       <button
-        onClick={onConnect}
-        className="button-hover w-full bg-neonBlue/20 hover:bg-neonBlue/30 text-neonBlue border border-neonBlue/50 rounded-lg p-3 flex items-center justify-between font-medium"
+        onClick={handleConnect}
+        disabled={isConnecting}
+        className="button-hover w-full bg-neonBlue/20 hover:bg-neonBlue/30 text-neonBlue border border-neonBlue/50 rounded-lg p-3 flex items-center justify-between font-medium disabled:opacity-70 disabled:cursor-not-allowed"
       >
         <span className="flex items-center">
-          <Wallet className="w-5 h-5 mr-2" />
-          Connect Wallet
+          {isConnecting ? (
+            <>
+              <Loader2 className="w-5 h-5 mr-2 animate-spin" />
+              Connecting...
+            </>
+          ) : (
+            <>
+              <Wallet className="w-5 h-5 mr-2" />
+              Connect Wallet
+            </>
+          )}
         </span>
         <ChevronRight className="w-5 h-5" />
       </button>
